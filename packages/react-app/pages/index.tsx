@@ -12,10 +12,12 @@ export default function Home() {
         mintMinipayNFT,
         getNFTs,
         signTransaction,
+        createAttestation, // Import the new attestation function
     } = useWeb3();
     const [cUSDLoading, setCUSDLoading] = useState(false);
     const [nftLoading, setNFTLoading] = useState(false);
     const [signingLoading, setSigningLoading] = useState(false);
+    const [attestLoading, setAttestLoading] = useState(false); // New state for attest button loading
     const [userOwnedNFTs, setUserOwnedNFTs] = useState<string[]>([]);
     const [tx, setTx] = useState<any>(undefined);
 
@@ -69,6 +71,18 @@ export default function Home() {
             console.log(error);
         } finally {
             setNFTLoading(false);
+        }
+    }
+
+    async function handleCreateAttestation() {
+        setAttestLoading(true);
+        try {
+            const newAttestationUID = await createAttestation();
+            console.log("Attestation Created with UID:", newAttestationUID);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setAttestLoading(false);
         }
     }
 
@@ -147,6 +161,15 @@ export default function Home() {
                             loading={nftLoading}
                             onClick={mintNFT}
                             title="Mint Minipay NFT"
+                            widthFull
+                        />
+                    </div>
+
+                    <div className="w-full px-3 mt-5">
+                        <PrimaryButton
+                            loading={attestLoading}
+                            onClick={handleCreateAttestation}
+                            title="Create Attestation"
                             widthFull
                         />
                     </div>

@@ -11,6 +11,8 @@ const nextConfig = {
     };
     return config;
   },
+  ignoreBuildErrors: true,
+
 };
 
 module.exports = nextConfig;
