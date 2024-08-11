@@ -32,7 +32,7 @@ export default function Success() {
     async function handleCreateAttestation() {
         setAttestLoading(true);
         try {
-            const newAttestationUID = await createAttestation();
+            const newAttestationUID = await createAttestation(external_id, account_id, "rappi");
             console.log("Attestation Created with UID:", newAttestationUID);
             setRedirect(true); // Set redirect to true after creating attestation
         } catch (error) {

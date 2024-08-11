@@ -1,5 +1,5 @@
 import { LockIcon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 
 const Card = ({ title, description, rewardsFixed, rewardsVariable, daysLeft, profileImage }) => {
@@ -77,35 +77,16 @@ const Card = ({ title, description, rewardsFixed, rewardsVariable, daysLeft, pro
 }
 
 export default function Loans() {
-    const dummyData = [
-        {
-            title: "Antonio Perez",
-            description: "I need money for the medicines of my family.",
-            rewardsFixed: 15,
-            rewardsVariable: 1,
-            daysLeft: 21,
-            profileImage: "https://media.glassdoor.com/people/sql/1275894/rappi-ceo1661918863764.png"
-        },
-        {
-            title: "Luis Gonzalez",
-            description: "I need funds to pay for my child's school.",
-            rewardsFixed: 10,
-            rewardsVariable: 0.5,
-            daysLeft: 15,
-            profileImage: "https://blogadmin.uberinternal.com/wp-content/uploads/2017/12/UberIM_001928-large.jpg"
-        },
-        {
-            title: "Maria Rodriguez",
-            description: "Help me afford medical treatment.",
-            rewardsFixed: 20,
-            rewardsVariable: 2,
-            daysLeft: 30,
-            profileImage: "https://lasillarota.com/u/fotografias/m/2022/4/23/f425x230-318566_332548_5050.jpg"
-        },
-
-    ];
-
+    const [loans, setLoans] = useState([]);
     const router = useRouter();
+
+    useEffect(() => {
+        // Replace with your actual API endpoint
+        fetch('/loans')
+            .then(response => response.json())
+            .then(data => setLoans(data))
+            .catch(error => console.error('Error fetching data:', error));
+    }, []);
 
     const handleRequestLoanClick = () => {
         router.push('/profiles');
@@ -121,17 +102,21 @@ export default function Loans() {
             <div>
                 <br/>
             </div>
-            {dummyData.map((data, index) => (
-                <Card
-                    key={index}
-                    title={data.title}
-                    description={data.description}
-                    rewardsFixed={data.rewardsFixed}
-                    rewardsVariable={data.rewardsVariable}
-                    daysLeft={data.daysLeft}
-                    profileImage={data.profileImage}
-                />
-            ))}
+            {loans.length > 0 ? (
+                loans.map((data, index) => (
+                    <Card
+                        key={index}
+                        title={data.title}
+                        description={data.description}
+                        rewardsFixed={data.rewardsFixed}
+                        rewardsVariable={data.rewardsVariable}
+                        daysLeft={data.daysLeft}
+                        profileImage={data.profileImage}
+                    />
+                ))
+            ) : (
+                <p>Loading...</p>
+            )}
         </div>
     );
 }

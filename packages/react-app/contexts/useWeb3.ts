@@ -25,7 +25,7 @@ const cUSDTokenAddress = "0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1"; // Testne
 const MINIPAY_NFT_CONTRACT = "0xE8F4699baba6C86DA9729b1B0a1DA1Bd4136eFeF"; // Testnet
 const LOAN_CONTRACT_ADDRESS = "0x63971CAEeed3653B0A60EeA2e1B6CE52589F38e2"; // Replace with your contract address
 const easContractAddress = "0xC2679fBD37d54388Ce493F1DB75320D236e1815e";
-const schemaUID = "0x31461d6b8fd1963f7ed44b79c5a1c2b652634e2efe2b670a2d01fb3d41f2e97f";
+const schemaUID = "0xf9e7365323aefa90b6d96fea64f1f5bbeaacdb6fc8a1b48c7a935176eb057094";
 
 export const useWeb3 = () => {
     const [address, setAddress] = useState<string | null>(null);
@@ -137,7 +137,7 @@ export const useWeb3 = () => {
         return res;
     };
 
-    const createAttestation = async () => {
+    const createAttestation = async (id, account, platform) => {
         try {
             let walletClient = createWalletClient({
                 transport: custom(window.ethereum),
@@ -157,7 +157,9 @@ export const useWeb3 = () => {
 
             const schemaEncoder = new SchemaEncoder("string platform");
             const encodedData = schemaEncoder.encodeData([
-                { name: "platform", value: "Minipay", type: "string" }
+                { name: "external_id", value: id, type: "string" },
+                { name: "account_id", value: account, type: "string" },
+                { name: "platform", value: platform, type: "string" },
             ]);
 
             const tx = await eas.attest({

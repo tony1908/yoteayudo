@@ -11,7 +11,7 @@ import { useWeb3 } from "@/contexts/useWeb3";
 
 const OfferCard = () => {
     const {
-        registerLoan, // Import the new attestation function
+        contributeToLoan,
     } = useWeb3();
     const [offer, setOffer] = useState(10);
     const [numberOfOffers, setNumberOfOffers] = useState(2);
@@ -25,21 +25,10 @@ const OfferCard = () => {
     const router = useRouter();
     const { id } = router.query;
 
-    // Function to generate random loan data
-    const generateRandomLoanData = () => {
-        const loanId = 5; // Random loan ID
-        const totalAmount = 1; // Random amount between 0 and 10 cUSD
-        const interestRate = 1; // Random interest rate between 1% and 6%
-        const period = 1; // Random period in days
-
-        return { loanId, totalAmount, interestRate, period };
-    };
-
 // Function to handle Place Offer button click
     const handlePlaceOffer = async () => {
         try {
-            const { loanId, totalAmount, interestRate, period } = generateRandomLoanData();
-            const receipt = await registerLoan(loanId, totalAmount, interestRate, period);
+            const receipt = await contributeToLoan(id, offer);
             console.log("Loan registered successfully:", receipt);
         } catch (error) {
             console.error("Error registering loan:", error);
